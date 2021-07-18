@@ -73,7 +73,7 @@ pipeline
 					bat "docker push ${registry}:${BUILD_NUMBER}"
 			}
 	  }
-  }
+    }
   
 	stage('Stop running containers') 
 	{
@@ -97,5 +97,5 @@ pipeline
 			}
 		}
 	}
-	}
+  }
 }
