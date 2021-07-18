@@ -5,8 +5,8 @@ pipeline
 {   
       agent any 
       environment 
-      {       
-        dockerImage = ''
+      {
+        registry = "rohit2522/nagp-jenkins-assignment"
       }
       tools
       {
@@ -61,21 +61,20 @@ pipeline
           stage('Docker image') 
               {
                  environment {
-                   buildNumber  =  "$BUILD_NUMBER"
                    branch = getGitBranchName()
-                   registry = "rohit2522/nagp-jenkins-assignment/i-rohit2522-master"
+                   
                 }
                   steps
                   {
-                       bat 'docker build -t '+ registry + ":$BUILD_NUMBER" + " . "  + '--no-cache'
+                       bat "docker build -t i-rohit2522-master :${BUILD_NUMBER} --no-cache -f Dockerfile ."
+                       withDockerRegistry([credentialsId: 'Test_Docker', url:""]){ 
+                       	bat "docker push ${registry}:${BUILD_NUMBER}"
+                       
                   }
               }
          stage('Push to DTR') {
-                  environment {
-                   registry = "rohit2522/nagp-jenkins-assignment/i-rohit2522-master" + "$BUILD_NUMBER"
-                }
                   steps{
-                          bat 'docker push '+registry
+                         bat "docker tag i-rohit2522-master:${BUILD_NUMBER} ${registry}:${BUILD_NUMBER}"
                   }
               }
       
@@ -85,7 +84,7 @@ pipeline
           steps{
                 script {
                    echo "Stop containers"
-                   bat 'docker stop c-rohit2522/nagp-jenkins-assignment || exit 0 && docker rm c-rohit2522/nagp-jenkins-assignment || exit 0'
+                   bat 'docker stop c-rohit2522-master || exit 0 && docker rm c-rohit2522-master || exit 0'
                 }
             }
          }
@@ -94,11 +93,10 @@ pipeline
         {    
            environment {
                branch = getGitBranchName()
-               registry = "rohit2522/nagp-jenkins-assignment/i-rohitsharma-master"
             }         
              steps{
                 script {
-                  bat 'docker run -p 7100:8080 --name c-rohitsharma-master '+ registry + ":$BUILD_NUMBER" 
+                  bat "docker run -p 7100:8080 --name c-rohit2522-master ${registry}:${BUILD_NUMBER}" 
                 }
             }
         }
