@@ -47,8 +47,6 @@ pipeline
          {
             environment 
             {
-               jdk = tool name: 'JAVA_HOME'
-               JAVA_HOME = "${jdk}"
                scannerHome = tool name: 'SonarQubeScanner'
             }
             steps
