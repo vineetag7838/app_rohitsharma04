@@ -93,7 +93,7 @@ pipeline
 		}         
 		 steps{
 			script {
-			  bat "docker run -p 7100:8080 --name c-rohit2522-master ${registry}:${BUILD_NUMBER}" 
+			  bat "docker run --name c-rohit2522-master -d -p 7100:8080 ${registry}:${BUILD_NUMBER}" 
 			}
 		}
 	}
