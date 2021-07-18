@@ -69,8 +69,7 @@ pipeline
 	stage('Push to Dockerhub Repo') {
 	  steps{
 			 bat "docker tag i-rohit2522-master:${BUILD_NUMBER} ${registry}:${BUILD_NUMBER}"
-			 withDockerRegistry([credentialsId: 
-				'Test_Docker', url:""]){
+			 withDockerRegistry([credentialsId: 'Test_Docker', url:""]){
 					bat "docker push ${registry}:${BUILD_NUMBER}"
 			}
 	  }
