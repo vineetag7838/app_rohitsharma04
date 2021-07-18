@@ -63,11 +63,8 @@ pipeline
 	{
 		  steps
 		  {
-			   bat "docker build -t i-rohit2522-master :${BUILD_NUMBER} --no-cache -f Dockerfile ."
-			   
-			   
+			   bat "docker build -t i-rohit2522-master :${BUILD_NUMBER} --no-cache -f Dockerfile ."   
 		  }
-	  }
 	}
 	stage('Push to Dockerhub Repo') {
 	  steps{
