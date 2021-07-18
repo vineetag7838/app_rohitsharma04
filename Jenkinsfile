@@ -64,17 +64,20 @@ pipeline
 		  steps
 		  {
 			   bat "docker build -t i-rohit2522-master :${BUILD_NUMBER} --no-cache -f Dockerfile ."
-			   withDockerRegistry([credentialsId: 'Test_Docker', url:""]){ 
-				bat "docker push ${registry}:${BUILD_NUMBER}"
+			   
 			   
 		  }
 	  }
 	}
 	stage('Push to Dockerhub Repo') {
-			  steps{
-					 bat "docker tag i-rohit2522-master:${BUILD_NUMBER} ${registry}:${BUILD_NUMBER}"
-			  }
-		  }
+	  steps{
+			 bat "docker tag i-rohit2522-master:${BUILD_NUMBER} ${registry}:${BUILD_NUMBER}"
+			 withDockerRegistry([credentialsId: 
+				'Test_Docker', url:""]){
+					bat "docker push ${registry}:${BUILD_NUMBER}"
+			}
+	  }
+  }
   
 	stage('Stop running containers') 
 	{
