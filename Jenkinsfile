@@ -81,7 +81,7 @@ pipeline
 	  steps{
 			script {
 			   echo "Stop containers"
-			   bat 'docker stop c-rohit2522-master || exit 0 && docker rm c-rohit2522-master || exit 0'
+			   bat "docker rm -f c-rohit2522-master && echo "container c-rohit2522-master removed" || echo "container c-rohit2522-master does not exist"			   
 			}
 		}
 	 }
