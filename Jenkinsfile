@@ -79,11 +79,11 @@ pipeline
 			}
 			stage('Push to Dockerhub Repo') {
 			  steps{
-					 bat "docker tag i-rohit2522-master:${BUILD_NUMBER} ${registry}:${BUILD_NUMBER}"
-					 bat "docker tag i-rohit2522-master:${BUILD_NUMBER} ${registry}:latest"
+					 bat "docker tag i-rohit2522-master:${BUILD_NUMBER} ${registry}:master-${BUILD_NUMBER}"
+					 bat "docker tag i-rohit2522-master:${BUILD_NUMBER} ${registry}:master-latest"
 					 withDockerRegistry([credentialsId: 'Test_Docker', url:""]){
-						bat "docker push ${registry}:${BUILD_NUMBER}"
-				 		bat "docker push ${registry}:latest"						
+						bat "docker push ${registry}:master-${BUILD_NUMBER}"
+				 		bat "docker push ${registry}:master-latest"				
 							
 					}
 			  }
@@ -94,7 +94,7 @@ pipeline
 	{            
 		 steps{
 			script {
-			  bat "docker run --name c-rohit2522-master -d -p 7200:8080 ${registry}:${BUILD_NUMBER}" 
+			  bat "docker run --name c-rohit2522-master -d -p 7200:8080 ${registry}:master-latest" 
 			}
 		}
 	}
