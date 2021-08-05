@@ -8,6 +8,9 @@ pipeline
   {
 	registry = "rohit2522/nagp-jenkins-assignment"
 	branch = getGitBranchName()
+	project_id = 'nagp-assignment-project'
+	cluster_name = 'kubernetes-cluster-rohitsharma04'
+	location = 'us-central1-c'
   }
   tools
   {
@@ -63,39 +66,43 @@ pipeline
 	{
 		  steps
 		  {
-			   bat "docker build -t i-rohit2522-master:${BUILD_NUMBER} --no-cache -f Dockerfile ."   
+			   bat "docker build -t i-rohit2522-develop:${BUILD_NUMBER} --no-cache -f Dockerfile ."   
 		  }
 	}
-	stage('Push to Dockerhub Repo') {
-	  steps{
-			 bat "docker tag i-rohit2522-master:${BUILD_NUMBER} ${registry}:${BUILD_NUMBER}"
-			 withDockerRegistry([credentialsId: 'Test_Docker', url:""]){
-					bat "docker push ${registry}:${BUILD_NUMBER}"
+	stage('Container') {
+		parallel{
+			stage('Precontainer Check') {
+				steps {
+				   bat "docker rm -f c-rohit2522-develop || exit 0 && docker rm c-rohit2522-develop || exit 0"
+					
+				}
 			}
-	  }
-    }
-  
-	stage('Stop running containers') 
-	{
-	  
-	  steps{
-			script {
-			   echo "Stop containers"
-			   bat 'docker stop c-rohit2522-master || exit 0 && docker rm c-rohit2522-master || exit 0'
-			}
-		}
-	 }
-
-	stage('Docker deployment') 
-	{    
-	   environment {
-		   branch = getGitBranchName()
-		}         
-		 steps{
-			script {
-			  bat "docker run --name c-rohit2522-master -d -p 7100:8080 ${registry}:${BUILD_NUMBER}" 
+			stage('Push to Dockerhub Repo') {
+			  steps{
+					 bat "docker tag i-rohit2522-develop:${BUILD_NUMBER} ${registry}:${BUILD_NUMBER}"
+					 bat "docker tag i-rohit2522-develop:${BUILD_NUMBER} ${registry}:latest"
+					 withDockerRegistry([credentialsId: 'Test_Docker', url:""]){
+				 		bat "docker push ${registry}:develop-latest"
+						bat "docker push ${registry}:develop-${BUILD_NUMBER}"
+							
+					}
+			  }
 			}
 		}
 	}
+	stage('Docker deployment') 
+	{            
+		 steps{
+			script {
+			  bat "docker run --name c-rohit2522-develop -d -p 7300:8080 ${registry}:${BUILD_NUMBER}" 
+			}
+		}
+	}
+	stage('Deploy to GK8E') {
+		steps {
+			bat "kubectl apply -f deployment.yaml"
+		}
+	}
+	
   }
 }
