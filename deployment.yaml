@@ -16,7 +16,7 @@
         app: kubernetes-app-master
     spec:
       containers:
-      - name: kubernetes-deployment-master
+      - name: kubernetes-app-master
         image: rohit2522/nagp-jenkins-assignment:master-latest
         ports:
         - containerPort: 8080
@@ -26,7 +26,7 @@
   apiVersion: apps/v1
   kind: Service
   metadata:
-    name: kubernetes-deployment-master
+    name: kubernetes-app-master
   spec:
     type: NodePort
     selector:
