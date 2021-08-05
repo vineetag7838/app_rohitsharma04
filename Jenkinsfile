@@ -82,9 +82,8 @@ pipeline
 					 bat "docker tag i-rohit2522-develop:${BUILD_NUMBER} ${registry}:${BUILD_NUMBER}"
 					 bat "docker tag i-rohit2522-develop:${BUILD_NUMBER} ${registry}:latest"
 					 withDockerRegistry([credentialsId: 'Test_Docker', url:""]){
-				 		bat "docker push ${registry}:develop-latest"
 						bat "docker push ${registry}:develop-${BUILD_NUMBER}"
-							
+						bat "docker push ${registry}:develop-latest"
 					}
 			  }
 			}
