@@ -1,20 +1,23 @@
   apiVersion: apps/v1
   kind: Deployment
   metadata:
-    name: kubernetes-cluster-rohitsharma04
+    name: kubernetes-deployment-master
+    labels:
+      app: kubernetes-app-master
+    
   spec:
     replicas: 4
     selector:
       matchLabels:
-        app: kubernetes-cluster-rohitsharma04
+        app: kubernetes-app-master
   template:
     metadata:
       labels:
-        app: nginx
+        app: kubernetes-app-master
     spec:
       containers:
-      - name: nginx
-        image: rohit2522/nagp-jenkins-assignment:latest
+      - name: kubernetes-deployment-master
+        image: rohit2522/nagp-jenkins-assignment:master-latest
         ports:
         - containerPort: 8080
           name: http
@@ -23,11 +26,11 @@
   apiVersion: apps/v1
   kind: Service
   metadata:
-    name: kubernetes-cluster-rohitsharma04
+    name: kubernetes-deployment-master
   spec:
     type: NodePort
     selector:
-        app: kubernetes-cluster-rohitsharma04
+        app: kubernetes-app-master
     ports:
         - protocol: TCP
           nodePort: 30157
