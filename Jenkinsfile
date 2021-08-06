@@ -9,7 +9,7 @@ pipeline
 	registry = "rohit2522/nagp-jenkins-assignment"
 	branch = getGitBranchName()
 	project_id = 'nagp-assignment-project'
-	cluster_name = 'kubernetes-cluster-rohitsharma04'
+	cluster_name = 'cluster-master'
 	location = 'us-central1-c'
   }
   tools
@@ -99,9 +99,9 @@ pipeline
 		}
 	}
 	stage('Deploy to GK8E') {
-		steps {
-			bat "kubectl apply -f deployment.yaml"
-		}
+		steps{   
+              step ([$class: 'KubernetesEngineBuilder', projectId: env.project_id, clusterName: env.cluster_name, location: env.location, manifestPattern: 'deployment.yaml', credentialsId: env.credentials_id, verifyDeployment: true])
+        }
 	}
 	
   }
