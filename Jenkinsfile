@@ -11,7 +11,7 @@ pipeline
 	project_id = 'nagp-assignment-project'
 	cluster_name = 'cluster-master'
 	location = 'us-central1-c'
-	credentialsId = 'Test_GKE'
+	credentials_id = 'Test_GKE'
 
   }
   tools
