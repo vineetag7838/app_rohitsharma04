@@ -1,39 +1,40 @@
-
-
   apiVersion: apps/v1
   kind: Deployment
   metadata:
-    name: kubernetes-cluster-rohitsharma04
+    name: kubernetes-deployment-develop
+    labels:
+      app: kubernetes-app-develop
+    
   spec:
     replicas: 4
     selector:
       matchLabels:
-        app: kubernetes-cluster-rohitsharma04
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      containers:
-      - name: nginx
-        image: rohit2522/nagp-jenkins-assignment:latest
-        ports:
-        - containerPort: 80
-          name: http
-          protocol: TCP
-          
-  apiVersion: apps/v1
+        app: kubernetes-app-develop
+    template:
+      metadata:
+        labels:
+          app: kubernetes-app-develop
+      spec:
+        containers:
+        - name: kubernetes-app-develop
+          image: rohit2522/nagp-jenkins-assignment:develop-latest
+          ports:
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+---         
+  apiVersion: v1
   kind: Service
   metadata:
-    name: kubernetes-cluster-rohitsharma04
+    name: kubernetes-service-develop
   spec:
     type: NodePort
     selector:
-        app: kubernetes-cluster-rohitsharma04
+        app: kubernetes-app-develop
     ports:
         - protocol: TCP
           nodePort: 30158
-          port: 80
-          targetPort: 80
+          port: 8080
+          targetPort: 8080
   
           

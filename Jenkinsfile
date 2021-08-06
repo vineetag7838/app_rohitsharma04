@@ -1,16 +1,9 @@
-def getGitBranchName() {
-	return scm.branches[0].name
-}
 pipeline
 {   
   agent any 
   environment 
   {
 	registry = "rohit2522/nagp-jenkins-assignment"
-	branch = getGitBranchName()
-	project_id = 'nagp-assignment-project'
-	cluster_name = 'kubernetes-cluster-rohitsharma04'
-	location = 'us-central1-c'
   }
   tools
   {
@@ -27,7 +20,7 @@ pipeline
 	 {
 		steps
 		{
-		   echo "build in master branch - 1"
+		   echo "build in develop branch - 1"
 		   checkout scm
 		   
 		}
@@ -36,7 +29,7 @@ pipeline
 	 {
 		steps
 		{
-		   echo "build in master branch - 2"
+		   echo "build in develop branch - 2"
 		   bat "mvn clean install -Dhttps.protocols=TLSv1.2"
 		}
 	 }
@@ -79,11 +72,12 @@ pipeline
 			}
 			stage('Push to Dockerhub Repo') {
 			  steps{
-					 bat "docker tag i-rohit2522-develop:${BUILD_NUMBER} ${registry}:${BUILD_NUMBER}"
-					 bat "docker tag i-rohit2522-develop:${BUILD_NUMBER} ${registry}:latest"
+					 bat "docker tag i-rohit2522-develop:${BUILD_NUMBER} ${registry}:develop-${BUILD_NUMBER}"
+					 bat "docker tag i-rohit2522-develop:${BUILD_NUMBER} ${registry}:develop-latest"
 					 withDockerRegistry([credentialsId: 'Test_Docker', url:""]){
 						bat "docker push ${registry}:develop-${BUILD_NUMBER}"
-						bat "docker push ${registry}:develop-latest"
+				 		bat "docker push ${registry}:develop-latest"				
+							
 					}
 			  }
 			}
@@ -93,14 +87,14 @@ pipeline
 	{            
 		 steps{
 			script {
-			  bat "docker run --name c-rohit2522-develop -d -p 7300:8080 ${registry}:${BUILD_NUMBER}" 
+			  bat "docker run --name c-rohit2522-develop -d -p 7300:8080 ${registry}:develop-latest" 
 			}
 		}
 	}
 	stage('Deploy to GK8E') {
-		steps {
-			bat "kubectl apply -f deployment.yaml"
-		}
+		steps{   
+              bat "kubectl apply -f deployment.yaml"
+        }
 	}
 	
   }
