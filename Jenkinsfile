@@ -11,6 +11,8 @@ pipeline
 	project_id = 'nagp-assignment-project'
 	cluster_name = 'cluster-master'
 	location = 'us-central1-c'
+	credentialsId: 'Test_GKE'
+
   }
   tools
   {
@@ -100,7 +102,7 @@ pipeline
 	}
 	stage('Deploy to GK8E') {
 		steps{   
-              step ([$class: 'KubernetesEngineBuilder', projectId: env.project_id, clusterName: env.cluster_name, location: env.location, manifestPattern: 'deployment.yaml', credentialsId: env.credentials_id, verifyDeployment: true])
+              step([$class: 'KubernetesEngineBuilder', projectId: env.project_id, clusterName: env.cluster_name, location: env.location, manifestPattern: 'deployment.yaml', credentialsId: env.credentials_id, verifyDeployment: true])
         }
 	}
 	
