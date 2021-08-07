@@ -18,7 +18,6 @@
         containers:
         - name: kubernetes-app-develop
           image: rohit2522/nagp-jenkins-assignment:develop-latest
-          imagePullPolicy: Always
           ports:
           - containerPort: 8080
             name: http
