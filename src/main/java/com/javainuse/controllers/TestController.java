@@ -9,7 +9,7 @@ import com.javainuse.model.Employee;
 @RestController
 public class TestController {
 
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	@RequestMapping(value = "/employee", method = RequestMethod.GET)
 	public Employee firstPage() {
 
 		Employee emp = new Employee();
