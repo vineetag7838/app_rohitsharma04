@@ -74,7 +74,7 @@ pipeline
 			  steps{
 					 bat "docker tag i-rohit2522-master:${BUILD_NUMBER} ${registry}:master-${BUILD_NUMBER}"
 					 bat "docker tag i-rohit2522-master:${BUILD_NUMBER} ${registry}:master-latest"
-					 withDockerRegistry([credentialsId: 'DockerHub', url:"https://registry.hub.docker.com"]){
+					 withDockerRegistry([credentialsId: 'DockerHub', url:""]){
 						bat "docker push ${registry}:master-${BUILD_NUMBER}"
 				 		bat "docker push ${registry}:master-latest"				
 							
